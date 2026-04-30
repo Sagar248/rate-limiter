@@ -2,15 +2,75 @@
 <html>
 <head>
   <title>Rate Limiter Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      background: #f7f9fc;
+    }
+
+    h2 {
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 8px;
+      width: 200px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
+    #log {
+      margin-top: 20px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      height: 250px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+    }
+
+    .log-item {
+      margin-bottom: 6px;
+      font-family: monospace;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
-  <h2>Rate Limiter Demo</h2>
 
-  <input id="userId" placeholder="User ID" />
+  <h2>🚦 Rate Limiter Demo</h2>
+  <div class="subtitle">Token Bucket (5 requests capacity, refill over time)</div>
+
+  <input id="userId" placeholder="Enter User ID" />
   <button onclick="hitApi()">Send Request</button>
   <button onclick="burst()">Burst (10 calls)</button>
+  <button onclick="clearLogs()">Clear</button>
 
-  <pre id="output"></pre>
+  <div id="log"></div>
 
   <script src="script.js"></script>
 </body>

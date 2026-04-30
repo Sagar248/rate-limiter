@@ -1,14 +1,27 @@
-const API_URL = "http://localhost:8080/api"; // change after deploy
+const API_URL = "https://rate-limiter-production.up.railway.app/api";
+
+function getTime() {
+  return new Date().toLocaleTimeString();
+}
 
 async function hitApi() {
   const userId = document.getElementById("userId").value || "demo";
 
-  const res = await fetch(API_URL, {
-    headers: { "X-User-ID": userId }
-  });
+  try {
+    const res = await fetch(API_URL, {
+      headers: { "X-User-ID": userId }
+    });
 
-  const data = await res.json();
-  log(data);
+    const data = await res.json();
+
+    if (data.error) {
+      log(`❌ Rate limit exceeded`, "error");
+    } else {
+      log(`✅ Allowed | Remaining: ${data.remaining}`, "success");
+    }
+  } catch (err) {
+    log(`⚠️ Network error`, "error");
+  }
 }
 
 async function burst() {
@@ -17,7 +30,20 @@ async function burst() {
   }
 }
 
-function log(data) {
-  const output = document.getElementById("output");
-  output.innerText = JSON.stringify(data, null, 2);
+function log(message, type) {
+  const logDiv = document.getElementById("log");
+
+  const item = document.createElement("div");
+  item.className = `log-item ${type}`;
+
+  item.innerHTML = `
+    ${message}
+    <div class="meta">${getTime()}</div>
+  `;
+
+  logDiv.prepend(item);
+}
+
+function clearLogs() {
+  document.getElementById("log").innerHTML = "";
 }
