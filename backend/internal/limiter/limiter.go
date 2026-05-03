@@ -28,7 +28,7 @@ func (l *Limiter) Allow(ctx context.Context, userID string) (bool, int) {
 
 	data, _ := l.rdb.HGetAll(ctx, key).Result()
 
-	tokens := capacity - 1
+	tokens := capacity
 	last := now
 
 	if len(data) > 0 {
